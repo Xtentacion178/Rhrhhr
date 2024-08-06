@@ -1,0 +1,107 @@
+-- Load the HOHO Library
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/hoho_lib.lua", true))()
+
+-- Create a window
+local win = lib:Window("Zombie Lab Beta", "Zombie Lab", Color3.new(0.333333, 0.666667, 1))
+
+-- Create an Items tab
+local tab = win:Tab("Items")
+
+-- Add a label
+tab:Label("Get tools", {["Visible"] = true})
+
+-- Add a button for "Get Virus"
+tab:Button("Get Virus", function()
+    game:GetService("ReplicatedStorage").Events.GiveVirus:FireServer()
+end)
+
+-- Add a button for "Get Cure"
+tab:Button("Get Cure", function()
+    game:GetService("ReplicatedStorage").Events.GiveCure:FireServer()
+end)
+
+-- Add a button for "Sword Aura"
+tab:Button("Sword Aura", function()
+    local range = math.random(6, 8)
+    local player = game:GetService("Players").LocalPlayer
+    game:GetService("RunService").RenderStepped:Connect(function()
+        local p = game.Players:GetPlayers()
+        for i = 2, #p do 
+            local v = p[i].Character
+            if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") and player:DistanceFromCharacter(v.HumanoidRootPart.Position) <= range then
+                local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+                if tool and tool:FindFirstChild("Handle") then
+                    tool:Activate()
+                    for i, part in next, v:GetChildren() do
+                        if part:IsA("BasePart") then
+                            firetouchinterest(tool.Handle, part, 0)
+                            firetouchinterest(tool.Handle, part, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end)
+
+-- Create a Teleport tab
+local tab = win:Tab("Teleport")
+
+-- Add a label for teleports
+tab:Label("Teleports Map", {["Visible"] = true})
+
+-- Add a section for area laboratories
+tab:Label("Area Laboratories:", {["Visible"] = true})
+
+-- Add teleport buttons
+tab:Button("Teleport to area 1", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-31, 3, 9)
+end)
+
+tab:Button("Teleport to area 2", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-62, -16, 70)
+end)
+
+tab:Button("Teleport to Virus area", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-57, -16, -49)
+end)
+
+-- Add a section for human teleports
+tab:Label("Humans Teleports", {["Visible"] = true})
+
+tab:Button("Teleport to Human Camera Room", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(152, 3, -8)
+end)
+
+tab:Button("Teleport to Human Room", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(121, 3, 3)
+end)
+
+tab:Button("Teleport to kit doctor Human", function()
+    local player = game.Players.LocalPlayer
+    local humanoidRootPart = player.Character.HumanoidRootPart
+    local originalPosition = humanoidRootPart.CFrame
+    
+    -- Teleport to the new position
+    humanoidRootPart.CFrame = CFrame.new(91, 3, 20)
+    
+    -- Wait for 6 seconds
+    wait(6)
+    
+    -- Teleport back to the original position
+    humanoidRootPart.CFrame = originalPosition
+end)
+
+-- Add a section for zombie teleports
+tab:Label("Zombie Teleports", {["Visible"] = true})
+
+tab:Button("Teleport to Zombie Room (OUTSIDE)", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-83, 3, 60)
+end)
+
+tab:Button("Teleport to Zombie Room (INSIDE)", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-75, 3, 93)
+end)
+
+-- Notify the user
+lib:Nof("Loaded!", 3)
